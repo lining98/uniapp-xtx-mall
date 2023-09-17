@@ -1,19 +1,9 @@
 <template>
   <view class="carousel">
     <swiper :autoplay="false" :circular="true" :interval="3000" @change="onchange">
-      <swiper-item>
+      <swiper-item v-for="item in list" :key="item.id">
         <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image src="../static/uploads/slider_1.jpg" mode="scaleToFill" />
-        </navigator>
-      </swiper-item>
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image src="../static/uploads/slider_2.jpg" mode="scaleToFill" />
-        </navigator>
-      </swiper-item>
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image src="../static/uploads/slider_3.jpg" mode="scaleToFill" />
+          <image :src="item.imgUrl" class="image" mode="scaleToFill" />
         </navigator>
       </swiper-item>
     </swiper>
@@ -21,8 +11,8 @@
     <!-- 指示点 -->
     <view class="indicator">
       <text
-        v-for="(item, index) in 3"
-        :key="item"
+        v-for="(item, index) in list"
+        :key="item.id"
         class="dot"
         :class="{ active: index === activeIndex }"
       ></text>
@@ -31,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import type { BannerItem } from '@/types/home'
 import { ref } from 'vue'
 
 const activeIndex = ref(0)
@@ -40,6 +31,12 @@ const onchange: UniHelper.SwiperOnChange = (ev) => {
   // console.log(ev.detail?.current)
   activeIndex.value = ev.detail?.current
 }
+
+// 定义props接受
+const props = defineProps<{
+  list: BannerItem[]
+}>()
+console.log(props)
 </script>
 
 <style lang="scss">
